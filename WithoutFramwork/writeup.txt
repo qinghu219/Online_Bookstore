@@ -1,0 +1,183 @@
+As customer:
+When you enter in the “http://cs-server.usc.edu:5869/homework3/home.php”,go to the first initial login page. 
+Now you can browse the special product in this page, you also can browse all products in the product page. But you cannot buy products. You need click the login button.
+
+If you are the old customer, you can directly login:
+for example: username: panda password: 123456  (You can use this check my homework).
+
+If you are one new customer, you can register first, then you login.
+
+After this, you can add the product to Cart, and buy the product, pay for this product. The first time you need to enter your credit card information. after that ,you buy product again, you don’t need to enter again. of course, you can edit your card information.
+
+After you pay the money, you can click the button “my order”, you can see the order information. 
+
+You also can edit your register information by click the button”my profile”.
+
+Besides, if you are inactive in one page more than 5 minutes, then you can’t to operate, and go back to the login.php.
+
+Now you are the manager, you need enter in the “http://cs-server.usc.edu:5869/homework3/login.php”
+username: liuliu password:123;  
+Then you enter into the manager page, you click the button”Go to orders”, then you can search the orders information by different methods.
+
+
+
+
+
+The customer side:
+The 5 main view pages are below:
+home.php
+orders.php
+shoppingcart.php
+profile.php
+loginc.php
+
+also: orderajax.php, mydetail.php, removecart.php, checkout.php and so on.
+
+The server side:
+add the order page for the manager.
+
+admin.php
+Once you enter into this admin.php, you can
+delete one or more together.(by select the mark).
+edit( you need choose one, and edit). to editadmin.php
+add( it is also). to adduser.php
+
+employee.php
+
+Once you enter into this admin.php, Besides you add information, you need first search what you want to see. if you direct press the search button ,you get all information in a table. (this is completed by using ajax. I use ajaxpro.php to write this).
+you can
+delete one or more together.(by select the mark).
+edit( you need choose one, and edit). to editemployee.php
+add( it is also). to addemployee.php
+
+linktocategory    to the editcategory.php( in this .php, because we edit category less time, so we add, delete edit category only in this editcategory.php).
+
+manager.php
+The search information have three types. I use div to change this, like three pages.
+In very one, you can search what you want information. and I realize this using the ajax.
+TO them,I use the saletable.php, protable.php, usertable.php. these are for for ajax search. 
+  
+
+
+
+
+
+To my database, the password is root. 
+I have created 10 tables as follows:
+1
+CREATE TABLE `Category` (
+  `categoryid` int(11) NOT NULL AUTO_INCREMENT,
+  `categoryname` varchar(45) NOT NULL,
+  `categorydesc` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`categoryid`),
+  UNIQUE KEY `categoryname_UNIQUE` (`categoryname`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+2
+CREATE TABLE `Users` (
+  `userid` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) NOT NULL,
+  `firstname` varchar(45) DEFAULT NULL,
+  `lastname` varchar(45) DEFAULT NULL,
+  `password` varchar(45) NOT NULL,
+  `usertype` varchar(45) NOT NULL,
+  `age` int(11) DEFAULT NULL,
+  `salary` int(11) DEFAULT NULL,
+  PRIMARY KEY (`userid`),
+  UNIQUE KEY `username_UNIQUE` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
+
+3
+CREATE TABLE `Products` (
+  `productid` int(11) NOT NULL AUTO_INCREMENT,
+  `categoryid` int(11) NOT NULL,
+  `productname` varchar(45) NOT NULL,
+  `productdesc` text,
+  `productimage` varchar(45) DEFAULT NULL,
+  `productprice` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`productid`),
+  KEY `categoryid_idx` (`categoryid`),
+  CONSTRAINT `categoryid` FOREIGN KEY (`categoryid`) REFERENCES `Category` (`categoryid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+
+4
+CREATE TABLE `Sales` (
+  `specialid` int(11) NOT NULL AUTO_INCREMENT,
+  `productid` int(11) NOT NULL,
+  `startdate` date DEFAULT NULL,
+  `enddate` date DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`specialid`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+
+5
+CREATE TABLE `card` (
+  `cardid` int(11) NOT NULL AUTO_INCREMENT,
+  `customerid` varchar(45) NOT NULL,
+  `expiretime` varchar(45) DEFAULT NULL,
+  `cardno` varchar(80) NOT NULL,
+  PRIMARY KEY (`cardid`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+6
+CREATE TABLE `customer` (
+  `customerid` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `age` int(11) DEFAULT NULL,
+  `phone` varchar(45) DEFAULT NULL,
+  `addressid` int(11) NOT NULL,
+  PRIMARY KEY (`customerid`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+7
+CREATE TABLE `orders` (
+  `orderid` int(11) NOT NULL AUTO_INCREMENT,
+  `customerid` varchar(45) NOT NULL,
+  `nowtime` datetime DEFAULT NULL,
+  `billingaddress` varchar(45) DEFAULT NULL,
+  `shippingaddress` varchar(45) DEFAULT NULL,
+  `total` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`orderid`)
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=latin1;
+
+8
+CREATE TABLE `orderdetail` (
+  `detailid` int(11) NOT NULL AUTO_INCREMENT,
+  `orderid` int(11) NOT NULL,
+  `productid` int(11) NOT NULL,
+  `qty` int(11) DEFAULT NULL,
+  `productprice` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`detailid`)
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=latin1;
+
+9
+CREATE TABLE `Cart` (
+  `cartid` int(11) NOT NULL AUTO_INCREMENT,
+  `productid` varchar(45) NOT NULL,
+  `qty` int(11) DEFAULT NULL,
+  `customerid` varchar(45) DEFAULT NULL,
+  `productprice` varchar(45) NOT NULL,
+  PRIMARY KEY (`cartid`)
+) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=latin1;
+
+
+
+10
+CREATE TABLE `address` (
+  `addressid` int(11) NOT NULL AUTO_INCREMENT,
+  `address` varchar(45) NOT NULL,
+  `city` varchar(45) NOT NULL,
+  `state` varchar(45) NOT NULL,
+  `country` varchar(45) NOT NULL,
+  `zip` varchar(45) NOT NULL,
+  PRIMARY KEY (`addressid`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+
+
+
+
+
+
+
