@@ -1,6 +1,9 @@
+Dear manager,
+This is  my web technology class project using PHP. I used CodeIgniter framework to implement this latest version. The database that I used is Mysql.
 
+The main code that I write is in three folders:
+controllers, models, views.
 
-Now I use the CodeIgniter framework(mvc) to implement this website again.
 
 As customer:
 When you enter in the “http://cs-server.usc.edu:5869/hw3/CodeIgniter/index.php/site/home”,go to the first initial login page. 
